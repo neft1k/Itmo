@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(17) }
+}
+
+repositories { mavenCentral() }
+
+dependencies {
+    compileOnly 'jakarta.platform:jakarta.jakartaee-api:10.0.0'
+    implementation 'org.eclipse.persistence:eclipselink:4.0.3'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+}
+
+tasks.test { useJUnitPlatform() }
+
+war {
+    archiveFileName = 'app.war'
+}
