@@ -1,0 +1,626 @@
+[
+  {
+    "id": 2,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:16:44.8156938",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 3,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:16:46.8415391",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 4,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:16:49.8578419",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 5,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:16:52.8888416",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 6,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:16:55.9061901",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 7,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:16:58.9173652",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 8,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:17:01.9503939",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 9,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:17:04.9832591",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 10,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:17:08.006696",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 11,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:17:11.0334799",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 12,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:17:14.0534759",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 13,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:17:17.0753907",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 14,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:17:20.0972453",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 15,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:18:53.8496877",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 16,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:18:55.8590275",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 17,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:18:58.8874474",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 18,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:19:01.9060296",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 19,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:19:04.9428373",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 20,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:19:07.9713679",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 21,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:19:10.9960931",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 22,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:19:14.0120232",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 23,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:19:17.0409761",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 24,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:19:20.0584054",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 25,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:19:23.084728",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 26,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:19:26.1180955",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  },
+  {
+    "id": 27,
+    "name": "1",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "2024-05-12T14:19:29.1512808",
+    "studentsCount": 1,
+    "formOfEducation": "EVENING_CLASSES",
+    "semesterEnum": "SIXTH",
+    "groupAdmin": {
+      "name": "1",
+      "passportID": "1",
+      "eyeColor": "BROWN",
+      "hairColor": "ORANGE",
+      "nationality": "JAPAN",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "1"
+      }
+    }
+  }
+]

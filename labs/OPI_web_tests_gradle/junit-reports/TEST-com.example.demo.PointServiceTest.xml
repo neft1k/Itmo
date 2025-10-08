@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.demo.PointServiceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2025-05-27T07:13:27.947Z" hostname="DESKTOP-OK49GCF" time="0.091">
+  <properties/>
+  <testcase name="testAddPoint_HitFalse()" classname="com.example.demo.PointServiceTest" time="0.085"/>
+  <testcase name="testAddPoint_HitTrue()" classname="com.example.demo.PointServiceTest" time="0.003"/>
+  <testcase name="testGetAllPoints()" classname="com.example.demo.PointServiceTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="register" tests="2" skipped="0" failures="0" errors="0" timestamp="2025-05-27T06:58:23.647Z" hostname="DESKTOP-OK49GCF" time="0.178">
+  <properties/>
+  <testcase name="кидает RuntimeException, когда пользователь уже есть" classname="com.example.demo.UserServiceTest$Register" time="0.112"/>
+  <testcase name="сохраняет нового пользователя, когда логин свободен" classname="com.example.demo.UserServiceTest$Register" time="0.066"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

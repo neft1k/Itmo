@@ -1,0 +1,530 @@
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.sound.sampled.*
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.hidetake.ssh' version '2.10.1'
+}
+
+group = 'com.example'
+version = appVersion
+sourceCompatibility = javaSource as Integer
+targetCompatibility = javaSource as Integer
+
+application {
+    mainClass = mainClassName
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    sshAntTask
+    functionalTestImplementation.extendsFrom testImplementation
+    functionalTestRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'com.oracle.database.jdbc:ojdbc11:21.9.0.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    sshAntTask 'org.apache.ant:ant-jsch:1.10.13'
+    sshAntTask 'com.jcraft:jsch:0.1.55'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.oracle.database.jdbc:ojdbc8:19.3.0.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-console-standalone:1.10.2'
+    functionalTestImplementation 'org.seleniumhq.selenium:selenium-java:4.20.0'
+    functionalTestImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    functionalTestRuntimeOnly 'org.junit.platform:junit-platform-console-standalone:1.10.2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+}
+
+
+sourceSets {
+    main {
+        java.srcDir 'backend/src/main/java'
+    }
+    test {
+        java {
+            srcDir 'backend/src/test/java'
+        }
+    }
+    functionalTest {
+        java {
+            srcDir 'backend/src/functionalTest/java'
+        }
+        compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
+        runtimeClasspath += output + compileClasspath
+    }
+}
+
+tasks.register('compile') {
+    group = 'build'
+    description = 'Компиляция исходников проекта (alias для compileJava)'
+    dependsOn 'compileJava'
+}
+
+
+bootJar {
+    archiveFileName = "demo-${appVersion}.jar"
+    manifest {
+        attributes 'Implementation-Version': appVersion
+    }
+}
+
+
+
+tasks.register('my_build') {
+    dependsOn 'classes', 'bootJar'
+    group = 'build'
+    description = 'Сборка исполняемого jar'
+}
+
+tasks.register('my_clean') {
+    group = 'build'
+    description = 'Удаляет директорию build со всеми временными файлами'
+    doLast {
+        delete buildDir
+    }
+}
+
+tasks.register('my_xml') {
+    group = 'verification'
+    description = 'Проверка XML-файлов через стандартный Java-парсер (без Ant)'
+
+    doLast {
+        def factory = DocumentBuilderFactory.newInstance()
+        factory.setNamespaceAware(true)
+
+        fileTree('.') {
+            include '**/*.xml'
+        }.each { File xmlFile ->
+            try {
+                def builder = factory.newDocumentBuilder()
+                builder.parse(xmlFile)
+                println "No mistakes in file: $xmlFile"
+            } catch (Exception e) {
+                println "Mistake in file $xmlFile: ${e.message}"
+            }
+        }
+    }
+}
+
+
+tasks.register('music') {
+    group = 'notification'
+    description = 'Проигрывает музыку после успешной сборки'
+    dependsOn 'build'
+
+    doLast {
+        def file = new File(music_path)
+        def audioIn = AudioSystem.getAudioInputStream(file)
+        def clip = AudioSystem.getClip()
+        clip.open(audioIn)
+        clip.start()
+        Thread.sleep((long) (clip.getMicrosecondLength() / 1000))
+    }
+}
+
+
+
+
+tasks.register('my_scp') {
+    dependsOn 'build'
+    group = 'distribution'
+    description = 'Отправка JAR на удалённый сервер через Ant SCP'
+
+    doLast {
+        def jar = file("$buildDir/libs/demo-${project.version}.jar")
+
+        ant.taskdef(name: 'scp', classname: 'org.apache.tools.ant.taskdefs.optional.ssh.Scp', classpath: configurations.sshAntTask.asPath)
+
+        def user = project.property("scp_user")
+        def pass = project.property("scp_password")
+        def host = project.property("scp_host")
+        def path = project.property("scp_path")
+        def port = project.property("scp_port").toInteger()
+
+        ant.scp(file: jar, todir: "${user}:${pass}@${host}:${path}", port: port, trust: true)
+    }
+}
+
+tasks.javadoc {
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+tasks.register('doc') {
+    group = 'documentation'
+    description = 'Добавляет в MANIFEST.MF MD5 и SHA-1 каждого .java и .class файла, генерирует и архивирует Javadoc'
+
+    dependsOn 'javadoc', 'build'
+
+    doLast {
+        // Только .java файлы
+        def filesToHash = fileTree("backend/src/main/java") {
+            include '**/*.java'
+        }
+
+        def manifestFile = file("$buildDir/tmp/bootJar/MANIFEST.MF")
+
+        filesToHash.each { file ->
+            def relativePath = project.relativePath(file)
+            def bytes = file.bytes
+
+            def md5 = java.security.MessageDigest.getInstance("MD5").digest(bytes).encodeHex().toString()
+            def sha1 = java.security.MessageDigest.getInstance("SHA-1").digest(bytes).encodeHex().toString()
+
+            manifestFile.text += "\n${relativePath}.MD5: ${md5}"
+            manifestFile.text += "\n${relativePath}.SHA1: ${sha1}"
+        }
+
+        def javadocDir = file("$buildDir/docs/javadoc")
+        ant.zip(destfile: "$buildDir/libs/demo-docs.zip", basedir: javadocDir)
+    }
+}
+
+
+
+
+
+
+
+tasks.register('diff') {
+    group = 'vcs'
+    description = 'Если затронуты .java-файлы — коммитим изменения'
+
+    doLast {
+        def regulyarka = /.*\.java/
+
+        def diff_files = "git diff --name-only".execute().text.readLines()
+
+        def needed = diff_files.findAll { it ==~ regulyarka }
+
+        if (needed) {
+            println "commit files: $needed"
+            exec { commandLine 'git', 'add', '.' }
+            exec { commandLine 'git', 'commit', '-m', "Auto-commit by Gradle diff task" }
+        } else {
+            println ' we dont have important changes.'
+        }
+    }
+}
+
+tasks.register('alt') {
+    group = 'build'
+    description = 'Создаёт альтернативную версию с заменами имён (классы, пакеты) и упаковывает в alt-JAR'
+    dependsOn 'build'
+
+    doLast {
+        def tmpDir = file("$buildDir/alt")
+        def altJar = file("$buildDir/libs/demo-alt-${project.version}.jar")
+        def originalJar = tasks.named('bootJar').get().archiveFile.get().asFile
+
+        copy {
+            from zipTree(originalJar)
+            into tmpDir
+        }
+
+        def rules = [
+                'UserService'    : 'AltUserService',
+                'PointEntity'    : 'AltPointEntity',
+                'com.example.demo': 'com.alt.demo',
+                'DemoApplication': 'AltApp'
+        ]
+
+
+        rules.each { findText, replaceWith ->
+            ant.replaceregexp(match: findText, replace: replaceWith, flags: 'g', byline: true) {
+                fileset(dir: tmpDir) {
+                    include(name: '**/*.class')
+                    include(name: '**/*.properties')
+                    include(name: '**/*.xml')
+                }
+            }
+        }
+
+
+        ant.jar(destfile: altJar, basedir: tmpDir, manifest: "$buildDir/tmp/bootJar/MANIFEST.MF")
+        println "✓ Альтернативный JAR создан: ${altJar}"
+    }
+}
+
+
+tasks.named('jar') {
+    enabled = false
+}
+
+tasks.register('team') {
+    group = 'build'
+    description = 'Собирает 4 предыдущие ревизии и упаковывает их JAR-файлы в ZIP'
+
+    doLast {
+        def git = { String cmd ->
+            def out = new ByteArrayOutputStream()
+            exec {
+                commandLine 'git', *cmd.split()
+                standardOutput = out
+                errorOutput = System.err
+                ignoreExitValue = true
+            }
+            return out.toString().trim()
+        }
+
+        def originalRef = git("rev-parse HEAD")
+        println "HEAD now: $originalRef"
+
+        def commits = git("rev-list --skip=0 --max-count=4 HEAD").readLines()
+        println "Commits: $commits"
+
+        def tmpRoot = file("$buildDir/team-clones")
+        def outputDir = file("$buildDir/team-jars")
+        tmpRoot.mkdirs()
+        outputDir.mkdirs()
+
+        commits.each { hash ->
+            def cloneDir = new File(tmpRoot, hash.take(7))
+            cloneDir.mkdirs()
+
+            exec {
+                commandLine 'cmd', '/c', 'git', 'clone', '.', cloneDir.absolutePath
+            }
+
+            exec {
+                workingDir cloneDir
+                commandLine 'cmd', '/c', 'git', 'checkout', hash
+            }
+
+            exec {
+                workingDir cloneDir
+                commandLine 'cmd', '/c', 'gradlew.bat', 'clean', 'build', '--no-daemon'
+            }
+
+            def jarDir = new File(cloneDir, "build/libs")
+            if (jarDir.exists()) {
+                jarDir.listFiles().findAll { it.name.endsWith(".jar") }.each { jar ->
+                    copy {
+                        from jar
+                        into outputDir
+                        rename { "${hash.take(7)}-$it" }
+                    }
+                    println " Скопирован: ${jar.name}"
+                }
+            } else {
+                println "JAR not found in $hash"
+            }
+
+            cloneDir.deleteDir()
+        }
+
+        def zipFile = file("$buildDir/team-jars/team_builds.zip")
+        ant.zip(destfile: zipFile, basedir: outputDir)
+        println "\n ZIP created: $zipFile"
+    }
+}
+
+
+import java.util.Properties
+tasks.register('env') {
+    group = 'application'
+    description = 'Запускает Spring Boot-приложение в этой же консоли (jar)'
+
+    dependsOn 'bootJar'
+
+    doLast {
+        def props = new Properties()
+        file('env.properties').withInputStream { props.load(it) }
+
+        def jvmArgs = props.getProperty('jvm.args', '').split("\\s+").findAll { it }
+        def jarFile = file("${buildDir}/libs/demo-${project.property('appVersion')}.jar")
+
+        println " Zapusk Spring Boot (jar) in this terminal..."
+        exec {
+            commandLine(["java"] + jvmArgs + ["-jar", jarFile.absolutePath])
+        }
+    }
+}
+
+
+
+tasks.register('native2asciiCopy') {
+    group       = 'build'
+    description = 'Конвертирует *.properties -> ASCII'
+
+    def srcDir     = file('src/main/resources')
+    def targetDir  = file("$buildDir/native2ascii")
+    def srcEncoding = 'windows-1251'
+
+    inputs.dir(srcDir)
+    outputs.dir(targetDir)
+
+    doLast {
+        delete targetDir; mkdir targetDir
+
+        ant.native2ascii(src : srcDir, dest : targetDir, encoding : srcEncoding, includes : '**/*.properties', ext : '.properties')
+        println "convrting in $targetDir "
+    }
+}
+
+tasks.register('my_test', JavaExec) {
+    group = 'verification'
+    description = 'Запуск Selenium UI тестов'
+
+    dependsOn 'build'
+
+    classpath = sourceSets.functionalTest.runtimeClasspath
+    mainClass = 'org.junit.platform.console.ConsoleLauncher'
+
+    args = [
+            '--scan-classpath',
+            sourceSets.functionalTest.output.classesDirs.asPath,
+            '--include-classname', '.*Tests'
+    ]
+}
+
+
+
+
+
+
+tasks.register('history') {
+    group = 'vcs'
+    description = 'Step by step, finds the last compilable revision and saves the diff of the failing commit'
+
+    doLast {
+        def git = { String cmd ->
+            def out = new ByteArrayOutputStream()
+            exec {
+                commandLine 'git', *cmd.split()
+                standardOutput = out
+                errorOutput = System.err
+                ignoreExitValue = true
+            }
+            out.toString().trim()
+        }
+
+        final def originalHead = git('rev-parse HEAD')
+        println "Original HEAD: $originalHead"
+
+        final def commits = git('rev-list --reverse HEAD').readLines()
+        println "Total commits: ${commits.size()}"
+
+        String lastWorking = null
+        String nextAfterWorking = null
+
+        for (int i = commits.size() - 1; i >= 0; i--) {
+            final def hash = commits[i]
+            println "\nChecking commit: $hash"
+
+            exec { commandLine 'git', 'checkout', hash }
+
+            def compileResult = exec {
+                ignoreExitValue = true
+                commandLine 'cmd', '/c', 'gradlew.bat', 'clean', 'compileJava', '--no-daemon'
+            }
+
+            if (compileResult.exitValue == 0) {
+                lastWorking = hash
+                if (i + 1 < commits.size()) {
+                    nextAfterWorking = commits[i + 1]
+                }
+                println "Build successful at commit: $hash"
+                break
+            } else {
+                println "Build failed at commit: $hash (exit code ${compileResult.exitValue})"
+            }
+        }
+
+        if (lastWorking == null) {
+            println "No working revision found in history."
+        } else if (nextAfterWorking == null) {
+            println "Current HEAD is already working. No diff needed."
+        } else {
+            println "Last working commit: $lastWorking"
+            println "First failing commit: $nextAfterWorking"
+
+            def diffFile = file("$buildDir/last_failed_diff_${nextAfterWorking.take(7)}.patch")
+            diffFile.text = git("diff $lastWorking $nextAfterWorking")
+            println "Diff saved to: ${diffFile}"
+        }
+
+        exec { commandLine 'git', 'checkout', originalHead }
+    }
+}
+tasks.register('my_junit_tests', Test) {
+    group = 'verification'
+    description = 'Запуск junit-тестов проекта после сборки'
+    dependsOn 'build'
+
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+
+    useJUnitPlatform()
+}
+
+tasks.register('report') {
+    group       = 'verification'
+    description = 'Сохраняет JUnit-отчёт и коммитит его в git, если тесты прошли успешно'
+    dependsOn   'my_junit_tests'
+
+    doLast {
+        def testTask = tasks.named('my_junit_tests').get()
+        if (testTask.state.failure) {
+            println 'Test failed'
+            return
+        }
+
+        def junitSrc = file("$buildDir/test-results/${testTask.name}")
+        if (!junitSrc.exists()) {
+            println "report JUnit not found on the way $junitSrc"
+            return
+        }
+
+        def destDir = file('junit-reports')
+        copy {
+            from junitSrc
+            into destDir
+        }
+        println "report copy to $destDir"
+
+        exec { commandLine 'git', 'add', destDir }
+
+        def statusOut = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'status', '--porcelain'
+            standardOutput = statusOut
+        }
+
+        if (statusOut.toString().trim()) {
+            exec {
+                commandLine 'git', 'commit', '-m', "JUnit report: ${new Date().format('yyyy-MM-dd HH:mm:ss')}"
+            }
+            println 'report was commited'
+        } else {
+            println 'not changes - we dont need commit'
+        }
+    }
+}
+
+tasks.named('my_junit_tests').configure {
+    finalizedBy 'report'
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.demo.AuthControllerTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2025-05-27T07:13:26.950Z" hostname="DESKTOP-OK49GCF" time="0.893">
+  <properties/>
+  <testcase name="register_ok()" classname="com.example.demo.AuthControllerTest" time="0.862"/>
+  <testcase name="login_fail()" classname="com.example.demo.AuthControllerTest" time="0.014"/>
+  <testcase name="logout_ok()" classname="com.example.demo.AuthControllerTest" time="0.002"/>
+  <testcase name="register_fail()" classname="com.example.demo.AuthControllerTest" time="0.006"/>
+  <testcase name="login_ok()" classname="com.example.demo.AuthControllerTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

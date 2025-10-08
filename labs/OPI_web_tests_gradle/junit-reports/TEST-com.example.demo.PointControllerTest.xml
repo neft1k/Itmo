@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.demo.PointControllerTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2025-05-27T07:13:27.849Z" hostname="DESKTOP-OK49GCF" time="0.028">
+  <properties/>
+  <testcase name="notLoggedIn_getPoints()" classname="com.example.demo.PointControllerTest" time="0.017"/>
+  <testcase name="notLoggedIn_addPoint()" classname="com.example.demo.PointControllerTest" time="0.002"/>
+  <testcase name="loggedIn_getPoints()" classname="com.example.demo.PointControllerTest" time="0.005"/>
+  <testcase name="loggedIn_addPoint()" classname="com.example.demo.PointControllerTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
