@@ -1,7 +1,0 @@
-package utility;
-
-public class DatabaseConfig {
-    public static final String URL = "jdbc:postgresql://localhost:5432/studs";
-    public static final String USER = "s408659";
-    public static final String PASSWORD = "PJBNMghRtdFAlq03";
-}

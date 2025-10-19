@@ -2,6 +2,19 @@
 	<div class="container">
 		<h1 style="margin:0 0 12px">Vehicle IS</h1>
 
+		<div class="panel" style="margin-bottom:12px">
+			<div class="row" style="gap:8px; align-items:center; flex-wrap:wrap">
+				<span>Режим: <strong>{{ store.role === 'admin' ? 'Администратор' : 'Пользователь' }}</strong></span>
+				<button class="btn secondary" @click="toggleRole">
+					Сменить на {{ store.role === 'admin' ? 'пользователя' : 'админа' }}
+				</button>
+				<div class="row" style="gap:6px; align-items:center">
+					<span class="label" style="margin:0">Имя:</span>
+					<input class="input" v-model.trim="store.username" :disabled="store.role === 'admin'" style="width:160px" />
+				</div>
+			</div>
+		</div>
+
 		<KpiBar 
 		:total="total" 
 		:avgFuel="avgFuel" 
@@ -18,6 +31,10 @@
 
 		<SpecialOps />
 
+		<hr class="sep" />
+
+		<ImportPanel />
+
 		<Modal v-if="showModal" @close="closeModal">
 			<template #header>
 				<h3 style="margin:0">{{ currentId ? `Изменить #${currentId}` : 'Создать Vehicle' }}</h3>
@@ -33,7 +50,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onBeforeUnmount, inject } from 'vue'
+import { ref, onMounted, onBeforeUnmount, inject } from 'vue'
 import { VehiclesApi, OpsApi } from './api/api'
 import { createVehicleStream } from './sse/sse'
 import { emptyVehicle } from './utils/validation'
@@ -43,8 +60,10 @@ import VehicleForm from './components/VehicleForm.vue'
 import VehicleTable from './components/VehicleTable.vue'
 import KpiBar from './components/KpiBar.vue'
 import SpecialOps from './components/SpecialOps.vue'
+import ImportPanel from './components/ImportPanel.vue'
 
 const store = inject('store')
+const prevUserName = ref(store.username || 'user')
 
 // KPI
 const total = ref(0)
@@ -106,6 +125,21 @@ async function save(dto) {
 		table.value?.$?.setupState?.reload?.()
 		await refreshKpis()
 	} catch (e) { toast(String(e.message || e)) }
+}
+
+function toggleRole() {
+	if (store.role === 'admin') {
+		store.role = 'user'
+		store.username = prevUserName.value || 'user'
+		toast('Режим: пользователь')
+	} else {
+		if (store.role === 'user' && store.username && store.username !== 'admin') {
+			prevUserName.value = store.username
+		}
+		store.role = 'admin'
+		store.username = 'admin'
+		toast('Режим: администратор')
+	}
 }
 
 // SSE

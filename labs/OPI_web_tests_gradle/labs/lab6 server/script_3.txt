@@ -1,4 +1,0 @@
-save
-show
-execute_skript
-script_3.txt

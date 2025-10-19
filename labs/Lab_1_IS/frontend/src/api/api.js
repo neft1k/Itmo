@@ -1,3 +1,5 @@
+import { store } from '../store'
+
 const BASE = (import.meta.env.VITE_API_BASE || 'http://localhost:8080/app/api').replace(/\/+$/, '')
 
 function q(params = {}) {
@@ -13,16 +15,38 @@ function q(params = {}) {
 	}
 }
 
-async function http(method, path, { params, body } = {}) {
+async function http(method, path, { params, body, formData, headers } = {}) {
 	const url = params ? q().search(path, params) : (BASE + path)
-	const res = await fetch(url, {
-		method,
-		headers: { 'Content-Type': 'application/json' },
-		body: body ? JSON.stringify(body) : undefined
-	})
+	const reqHeaders = new Headers(headers || {})
+	reqHeaders.set('X-User', store.username || 'user')
+	reqHeaders.set('X-Role', store.role || 'user')
+
+	let payload
+	if (formData) {
+		payload = formData
+		reqHeaders.delete('Content-Type')
+	} else if (body !== undefined) {
+		if (!reqHeaders.has('Content-Type')) {
+			reqHeaders.set('Content-Type', 'application/json')
+		}
+		payload = JSON.stringify(body)
+	}
+
+	const options = { method, headers: reqHeaders }
+	if (payload !== undefined) options.body = payload
+
+	const res = await fetch(url, options)
 	if (!res.ok) {
 		let msg = await res.text().catch(() => '')
-		try { const j = JSON.parse(msg); msg = j.message || msg } catch { }
+		try {
+			const j = JSON.parse(msg)
+			if (j) {
+				const baseMsg = j.message || ''
+				const details = Array.isArray(j.details) ? j.details.filter(Boolean) : []
+				msg = baseMsg
+				if (details.length) msg += ` (${details.join('; ')})`
+			}
+		} catch { }
 		throw new Error(`${res.status} ${res.statusText}${msg ? ` – ${msg}` : ''}`)
 	}
 	const ct = res.headers.get('content-type') || ''
@@ -51,4 +75,15 @@ export const OpsApi = {
 // SSE
 export const SseApi = {
 	streamUrl: () => BASE + '/stream/vehicles'
+}
+
+// Imports
+export const ImportApi = {
+	upload: (file) => {
+		const form = new FormData()
+		form.append('file', file)
+		return http('POST', '/vehicles/import', { formData: form })
+	},
+	history: () => http('GET', '/vehicles/import/history'),
+	get: (id) => http('GET', `/vehicles/import/${id}`)
 }

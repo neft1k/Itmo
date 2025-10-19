@@ -1,0 +1,35 @@
+[
+  {
+    "name": "admin-import-1",
+    "coordinates": { "x": 600.1, "y": 60.0 },
+    "type": "SHIP",
+    "enginePower": 220,
+    "numberOfWheels": null,
+    "capacity": 150.0,
+    "distanceTravelled": 45.0,
+    "fuelConsumption": 11,
+    "fuelType": "PLASMA"
+  },
+  {
+    "name": "admin-import-2",
+    "coordinates": { "x": 610.2, "y": 61.5 },
+    "type": "CAR",
+    "enginePower": 180,
+    "numberOfWheels": 6,
+    "capacity": 70.0,
+    "distanceTravelled": 25.0,
+    "fuelConsumption": 8,
+    "fuelType": "MANPOWER"
+  },
+  {
+    "name": "admin-import-3",
+    "coordinates": { "x": 620.3, "y": 62.7 },
+    "type": "HOVERBOARD",
+    "enginePower": 320,
+    "numberOfWheels": 8,
+    "capacity": 210.0,
+    "distanceTravelled": 190.0,
+    "fuelConsumption": 17,
+    "fuelType": "ANTIMATTER"
+  }
+]

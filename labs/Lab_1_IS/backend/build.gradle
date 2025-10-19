@@ -7,10 +7,17 @@ java {
     toolchain { languageVersion = JavaLanguageVersion.of(17) }
 }
 
-repositories { mavenCentral() }
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url = uri("https://repo1.maven.org/maven2")
+    }
+}
 
 dependencies {
     compileOnly 'jakarta.platform:jakarta.jakartaee-api:10.0.0'
+    compileOnly 'org.jboss.resteasy:resteasy-multipart-provider:6.2.7.Final'
     implementation 'org.eclipse.persistence:eclipselink:4.0.3'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'

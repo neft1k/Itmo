@@ -5,6 +5,7 @@
 
         <class>vehicle.model.Vehicle</class>
         <class>vehicle.model.Coordinates</class>
+        <class>vehicle.model.ImportJob</class>
 
         <properties>
             <property name="jakarta.persistence.schema-generation.database.action" value="create"/>

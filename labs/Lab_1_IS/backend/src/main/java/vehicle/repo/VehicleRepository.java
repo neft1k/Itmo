@@ -3,10 +3,13 @@ package vehicle.repo;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
+import vehicle.exception.UniqueConstraintViolationException;
 import vehicle.model.FuelType;
 import vehicle.model.Vehicle;
 import vehicle.model.VehicleType;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 
 @ApplicationScoped
@@ -81,17 +84,40 @@ public class VehicleRepository {
     public Vehicle save(Vehicle v) {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-
-        Vehicle managed;
-        if (v.getId() == null) {
-            em.persist(v);
-            managed = v;
-        } else {
-            managed = em.merge(v);
+        Connection connection = unwrapConnection();
+        Integer prevIsolation = null;
+        try {
+            if (connection != null) {
+                prevIsolation = connection.getTransactionIsolation();
+                connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            }
+            assertUnique(v, v.getId());
+            Vehicle managed;
+            if (v.getId() == null) {
+                em.persist(v);
+                managed = v;
+            } else {
+                managed = em.merge(v);
+            }
+            tx.commit();
+            return managed;
+        } catch (RuntimeException e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
+        } catch (SQLException e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Не удалось установить уровень изоляции транзакции", e);
+        } finally {
+            if (connection != null && prevIsolation != null) {
+                try {
+                    connection.setTransactionIsolation(prevIsolation);
+                } catch (SQLException ignored) {}
+            }
         }
-
-        tx.commit();
-        return managed;
     }
 
 
@@ -102,5 +128,74 @@ public class VehicleRepository {
         if (v != null)
             em.remove(v);
         tx.commit();
+    }
+
+    public boolean existsByNameIgnoreCase(String name, Long excludeId) {
+        if (name == null) {
+            return false;
+        }
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Long cnt = em.createQuery(
+                        "SELECT COUNT(v) FROM Vehicle v WHERE lower(v.name) = :name " +
+                                "AND (:excludeId IS NULL OR v.id <> :excludeId)", Long.class)
+                .setParameter("name", name == null ? null : name.toLowerCase())
+                .setParameter("excludeId", excludeId)
+                .getSingleResult();
+        tx.commit();
+        return cnt != null && cnt > 0;
+    }
+
+    public boolean existsByCoordinates(Double x, float y, Long excludeId) {
+        if (x == null) {
+            return false;
+        }
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Long cnt = em.createQuery(
+                        "SELECT COUNT(v) FROM Vehicle v WHERE v.coordinates.x = :x AND v.coordinates.y = :y " +
+                                "AND (:excludeId IS NULL OR v.id <> :excludeId)",
+                        Long.class)
+                .setParameter("x", x)
+                .setParameter("y", y)
+                .setParameter("excludeId", excludeId)
+                .getSingleResult();
+        tx.commit();
+        return cnt != null && cnt > 0;
+    }
+
+    private Connection unwrapConnection() {
+        try {
+            return em.unwrap(Connection.class);
+        } catch (RuntimeException ex) {
+            return null;
+        }
+    }
+
+    private void assertUnique(Vehicle vehicle, Long excludeId) {
+        if (vehicle.getName() != null) {
+            Long nameConflict = em.createQuery(
+                            "SELECT COUNT(v) FROM Vehicle v WHERE lower(v.name) = :name " +
+                                    "AND (:excludeId IS NULL OR v.id <> :excludeId)", Long.class)
+                    .setParameter("name", vehicle.getName().toLowerCase(Locale.ROOT))
+                    .setParameter("excludeId", excludeId)
+                    .getSingleResult();
+            if (nameConflict != null && nameConflict > 0) {
+                throw new UniqueConstraintViolationException("Имя \"" + vehicle.getName() + "\" уже занято");
+            }
+        }
+        if (vehicle.getCoordinates() != null && vehicle.getCoordinates().getX() != null) {
+            Long coordsConflict = em.createQuery(
+                            "SELECT COUNT(v) FROM Vehicle v WHERE v.coordinates.x = :x AND v.coordinates.y = :y " +
+                                    "AND (:excludeId IS NULL OR v.id <> :excludeId)", Long.class)
+                    .setParameter("x", vehicle.getCoordinates().getX())
+                    .setParameter("y", vehicle.getCoordinates().getY())
+                    .setParameter("excludeId", excludeId)
+                    .getSingleResult();
+            if (coordsConflict != null && coordsConflict > 0) {
+                throw new UniqueConstraintViolationException("Координаты (" +
+                        vehicle.getCoordinates().getX() + ", " + vehicle.getCoordinates().getY() + ") уже используются");
+            }
+        }
     }
 }

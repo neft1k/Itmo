@@ -1,18 +1,14 @@
-import { createApp, reactive, provide } from 'vue'
+import { createApp, provide, h } from 'vue'
 import App from './App.vue'
 import './styles.css'
+import { store } from './store'
 
 const app = createApp({
   setup() {
-    const store = reactive({
-      sseOnline: false,
-      lastEvent: null
-    })
     provide('store', store)
   },
   render() {
     return h(App)
   }
 })
-import { h } from 'vue'
 app.mount('#app')
