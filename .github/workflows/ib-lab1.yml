@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  tests-and-sast:
+  sast:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -24,18 +24,16 @@ jobs:
           java-version: '17'
           cache: maven
           cache-dependency-path: labs/IB_LAB1/pom.xml
-      - name: Build and integration tests
+      - name: Build application
         run: ./mvnw -B -ntp verify
       - name: SAST — SpotBugs and Find Security Bugs
         run: ./mvnw -B -ntp spotbugs:check
-      - name: Save test and SAST reports
+      - name: Save SAST report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: tests-and-sast
-          path: |
-            labs/IB_LAB1/target/surefire-reports/
-            labs/IB_LAB1/target/spotbugsXml.xml
+          name: sast
+          path: labs/IB_LAB1/target/spotbugsXml.xml
 
   sca:
     runs-on: ubuntu-latest
