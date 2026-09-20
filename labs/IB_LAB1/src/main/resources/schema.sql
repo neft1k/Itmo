@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS app_users (
+    id VARCHAR(36) PRIMARY KEY,
+    username VARCHAR(64) NOT NULL UNIQUE,
+    password_hash VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS notes (
+    id VARCHAR(36) PRIMARY KEY,
+    owner_id VARCHAR(36) NOT NULL REFERENCES app_users(id),
+    title VARCHAR(200) NOT NULL,
+    content VARCHAR(10000) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_notes_owner ON notes(owner_id);

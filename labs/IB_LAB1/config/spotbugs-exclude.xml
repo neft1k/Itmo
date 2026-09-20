@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- Spring singleton collaborators are intentionally shared, never exposed by getters. -->
+    <Match>
+        <Class name="~org\.example\..*"/>
+        <Method name="&lt;init&gt;"/>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+    <!-- No cookie/session authentication: only explicitly supplied Bearer tokens. -->
+    <Match>
+        <Class name="org.example.security.SecurityConfig"/>
+        <Bug pattern="SPRING_CSRF_PROTECTION_DISABLED"/>
+    </Match>
+    <!-- Informational endpoint inventory, not a vulnerability finding. -->
+    <Match>
+        <Class name="~org\.example\.(auth\.AuthController|note\.NoteController)"/>
+        <Bug pattern="SPRING_ENDPOINT"/>
+    </Match>
+    <!-- HttpSecurity.build() declares Exception in the framework API. -->
+    <Match>
+        <Class name="org.example.security.SecurityConfig"/>
+        <Method name="securityFilterChain"/>
+        <Bug pattern="THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION"/>
+    </Match>
+</FindBugsFilter>

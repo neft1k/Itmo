@@ -25,7 +25,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-@Transactional
 public class VehicleImportService {
 
     @PersistenceContext
@@ -69,6 +68,7 @@ public class VehicleImportService {
         }
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     private ImportJob createJob(String fileName) {
         ImportJob job = new ImportJob();
         job.setFileName((fileName == null || fileName.isBlank()) ? "unknown.json" : fileName);
@@ -79,6 +79,7 @@ public class VehicleImportService {
         return jobs.save(job);
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     private void markFailed(ImportJob job, String reason, List<String> errors) {
         job.setStatus(ImportStatus.FAILED);
         job.setFinishedAt(OffsetDateTime.now());
@@ -90,6 +91,7 @@ public class VehicleImportService {
         jobs.save(job);
 }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     private void markSuccess(ImportJob job, int createdCount) {
         job.setCreatedCount(createdCount);
         job.setStatus(ImportStatus.SUCCESS);
