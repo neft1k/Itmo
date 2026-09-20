@@ -5,6 +5,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+defaults:
+  run:
+    working-directory: labs/IB_LAB1
+
 permissions:
   contents: read
 
@@ -19,6 +23,7 @@ jobs:
           distribution: temurin
           java-version: '17'
           cache: maven
+          cache-dependency-path: labs/IB_LAB1/pom.xml
       - name: Build and integration tests
         run: ./mvnw -B -ntp verify
       - name: SAST — SpotBugs and Find Security Bugs
@@ -29,8 +34,8 @@ jobs:
         with:
           name: tests-and-sast
           path: |
-            target/surefire-reports/
-            target/spotbugsXml.xml
+            labs/IB_LAB1/target/surefire-reports/
+            labs/IB_LAB1/target/spotbugsXml.xml
 
   sca:
     runs-on: ubuntu-latest
@@ -42,6 +47,7 @@ jobs:
           distribution: temurin
           java-version: '17'
           cache: maven
+          cache-dependency-path: labs/IB_LAB1/pom.xml
       - name: SCA — OWASP Dependency-Check
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
@@ -51,4 +57,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: sca
-          path: target/dependency-check-report.*
+          path: labs/IB_LAB1/target/dependency-check-report.*
