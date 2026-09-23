@@ -170,3 +170,9 @@ decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(
 ```
 
 Без токена или с недействительным токеном обе ручки заметок возвращают `401`. 
+
+### SAST
+![img.png](img.png)
+
+### SCA
+![img_1.png](img_1.png)
