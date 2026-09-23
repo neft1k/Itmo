@@ -14,11 +14,11 @@ permissions:
 
 jobs:
   sast:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -30,17 +30,17 @@ jobs:
         run: ./mvnw -B -ntp spotbugs:check
       - name: Save SAST report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: sast
           path: labs/IB_LAB1/target/spotbugsXml.xml
 
   sca:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 40
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -52,7 +52,7 @@ jobs:
         run: ./mvnw -B -ntp dependency-check:check
       - name: Save dependency reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: sca
           path: labs/IB_LAB1/target/dependency-check-report.*

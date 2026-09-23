@@ -129,14 +129,14 @@ users.insert(new AppUser(UUID.randomUUID().toString(), username, encoder.encode(
 
 В БД хранится только `password_hash`. 
 
-**Выдача JWT.** В [AuthController](src/main/java/org/example/auth/AuthController.java) после успешной проверки логина и пароля создаётся токен на 15 минут:
+**Выдача JWT.** В [AuthController](src/main/java/org/example/auth/AuthController.java) после успешной проверки логина и пароля создаётся токен на 3 минуты:
 
 ```java
 var authenticated = authentication.authenticate(
         UsernamePasswordAuthenticationToken.unauthenticated(request.username(), request.password()));
 var now = Instant.now();
 var claims = JwtClaimsSet.builder().issuer(SecurityConfig.ISSUER).subject(authenticated.getName())
-        .issuedAt(now).expiresAt(now.plusSeconds(900)).build();
+        .issuedAt(now).expiresAt(now.plusSeconds(180)).build();
 var token = encoder.encode(JwtEncoderParameters.from(
         JwsHeader.with(MacAlgorithm.HS256).build(), claims)).getTokenValue();
 ```

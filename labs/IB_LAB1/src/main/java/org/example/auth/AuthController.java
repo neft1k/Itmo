@@ -38,10 +38,10 @@ public class AuthController {
                 UsernamePasswordAuthenticationToken.unauthenticated(request.username(), request.password()));
         var now = Instant.now();
         var claims = JwtClaimsSet.builder().issuer(SecurityConfig.ISSUER).subject(authenticated.getName())
-                .issuedAt(now).expiresAt(now.plusSeconds(900)).build();
+                .issuedAt(now).expiresAt(now.plusSeconds(180)).build();
         var token = encoder.encode(JwtEncoderParameters.from(
                 JwsHeader.with(MacAlgorithm.HS256).build(), claims)).getTokenValue();
-        return new TokenResponse(token, "Bearer", 900);
+        return new TokenResponse(token, "Bearer", 180);
     }
 
     public record LoginRequest(@NotBlank @Size(max = 64) String username,
